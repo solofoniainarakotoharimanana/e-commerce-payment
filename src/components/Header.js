@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../assets/shopping-cart.svg";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Header = () => {
+  const [products, setProducts] = useState([]);
+  const productData = useSelector((store) => store.bazar.productData);
+  useEffect(() => {
+    setProducts(productData);
+  }, [productData]);
+  console.log(products);
   return (
-    <div className="w-full h-20 bg-white border-b-[1px] border-b-gray-800 ">
+    <div className="w-full h-20 bg-white border-b-[1px] border-b-gray-800 sticky top-0 z-50">
       <div className="max-w-screen-xl h-full mx-auto flex items-center justify-between">
         <div>
-          <h4 className="text-green-700 font-extrabold text-4xl">Bazar</h4>
+          <Link to="/">
+            <h4 className="text-green-700 font-extrabold text-4xl">Bazar</h4>
+          </Link>
         </div>
         <div className="flex items-center gap-8">
           <ul className="flex items-center gap-8">
@@ -41,7 +52,7 @@ const Header = () => {
                mr-2 px-2.5 py-0.5 
                rounded-full dark:bg-blue-900 dark:text-blue-300 bottom-3 left-3"
             >
-              0
+              {productData ? productData.length : 0}
             </span>
           </div>
           <div className="">
