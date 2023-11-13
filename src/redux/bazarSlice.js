@@ -8,7 +8,7 @@ export const bazarSlice = createSlice({
   name: "bazar",
   initialState,
   reducers: {
-    addCart(state, action) {
+    addTocart(state, action) {
       console.log(action.payload);
       const item = state.productData.find((p) => p._id === action.payload._id);
       if (item) {
@@ -17,8 +17,16 @@ export const bazarSlice = createSlice({
         state.productData.push(action.payload);
       }
     },
+    deleteFromCart(state, action) {
+      state.productData = state.productData.filter(
+        (product) => product.id !== action.payload.id
+      );
+    },
+    resetCart(state, action) {
+      state.productData = [];
+    },
   },
 });
 
-export const { addCart } = bazarSlice.actions;
+export const { addTocart } = bazarSlice.actions;
 export default bazarSlice.reducer;

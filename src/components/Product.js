@@ -5,7 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { MdOutlineStar } from "react-icons/md";
 import Rating from "../rating/Rating";
 import { useDispatch } from "react-redux";
-import { addCart } from "../redux/bazarSlice";
+import { addTocart } from "../redux/bazarSlice";
 import { ToastContainer, toast } from "react-toastify";
 
 const Product = () => {
@@ -92,7 +92,7 @@ const Product = () => {
               <button
                 onClick={() =>
                   dispatch(
-                    addCart({
+                    addTocart({
                       _id: product._id,
                       title: product.title,
                       image: product.image,
@@ -120,7 +120,7 @@ const Product = () => {
       )}
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

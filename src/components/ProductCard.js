@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addCart } from "../redux/bazarSlice";
+import { addTocart } from "../redux/bazarSlice";
 import { ToastContainer, toast } from "react-toastify";
 
 const ProductCard = ({ product }) => {
@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
         <p
           onClick={() =>
             dispatch(
-              addCart({
+              addTocart({
                 _id: product._id,
                 title: product.title,
                 image: product.image,
@@ -82,7 +82,7 @@ const ProductCard = ({ product }) => {
       </div>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

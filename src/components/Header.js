@@ -10,7 +10,6 @@ const Header = () => {
   useEffect(() => {
     setProducts(productData);
   }, [productData]);
-  console.log(products);
   return (
     <div className="w-full h-20 bg-white border-b-[1px] border-b-gray-800 sticky top-0 z-50">
       <div className="max-w-screen-xl h-full mx-auto flex items-center justify-between">
@@ -44,16 +43,18 @@ const Header = () => {
             </li>
           </ul>
           <div className="relative">
-            <img className="w-7" src={Card} alt="" />
-            <span
-              className=" absolute bg-blue-700
+            <Link to="/cart">
+              <img className="w-7" src={Card} alt="" />
+              <span
+                className=" absolute bg-blue-700
               text-white
                text-sm font-bold 
                mr-2 px-2.5 py-0.5 
                rounded-full dark:bg-blue-900 dark:text-blue-300 bottom-3 left-3"
-            >
-              {productData ? productData.length : 0}
-            </span>
+              >
+                {products ? products.length : 0}
+              </span>
+            </Link>
           </div>
           <div className="">
             <img
