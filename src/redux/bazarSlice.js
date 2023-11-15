@@ -18,15 +18,38 @@ export const bazarSlice = createSlice({
       }
     },
     deleteFromCart(state, action) {
+      console.log(action.payload);
       state.productData = state.productData.filter(
-        (product) => product.id !== action.payload.id
+        (product) => product._id !== action.payload._id
       );
     },
     resetCart(state, action) {
       state.productData = [];
     },
+    incrementQuantity(state, { payload }) {
+      const item = state.productData.find((p) => p._id === payload._id);
+      if (item) {
+        item.quantity++;
+      }
+    },
+    decrementQuantity(state, { payload }) {
+      const item = state.productData.find((p) => p._id === payload._id);
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity--;
+        } else {
+          item.quantity = 1;
+        }
+      }
+    },
   },
 });
 
-export const { addTocart } = bazarSlice.actions;
+export const {
+  addTocart,
+  resetCart,
+  deleteFromCart,
+  incrementQuantity,
+  decrementQuantity,
+} = bazarSlice.actions;
 export default bazarSlice.reducer;
