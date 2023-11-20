@@ -3,20 +3,42 @@ import Card from "../assets/shopping-cart.svg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-
+import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { LoginService } from "../service/LoginService";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import { useDispatch } from "react-redux";
 const Header = () => {
+  const auth = getAuth();
   const [products, setProducts] = useState([]);
   const productData = useSelector((store) => store.bazar.productData);
+  const userInfo = useSelector((store) => store.bazar.userInfo);
+  console.log(userInfo);
+
+  console.log(userInfo);
   useEffect(() => {
     setProducts(productData);
   }, [productData]);
+
   return (
     <div className="w-full h-20 bg-white border-b-[1px] border-b-gray-800 sticky top-0 z-50">
       <div className="max-w-screen-xl h-full mx-auto flex items-center justify-between">
         <div>
-          <Link to="/">
-            <h4 className="text-green-700 font-extrabold text-4xl">Bazar</h4>
-          </Link>
+          <div>
+            <Link to="/">
+              <h4 className="text-green-700 font-extrabold text-4xl">Bazar</h4>
+            </Link>
+          </div>
+          {userInfo && (
+            <p className="text-sm font-bold">
+              <span className="text-black">Welcome</span>{" "}
+              <span className="text-blue-800">{userInfo.name}</span>
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-8">
           <ul className="flex items-center gap-8">
@@ -32,16 +54,32 @@ const Header = () => {
               </li>
             </Link>
 
-            <li className="text-base text-black font-bold hover:text-orange-900 hover:underline underline-offset-2 decoration-[1px] cursor-pointer duration-300">
+            <li
+              className="text-base text-black font-bold 
+            hover:text-orange-900 hover:underline 
+            underline-offset-2 decoration-[1px] cursor-pointer duration-300"
+            >
               Pages
             </li>
-            <li className="text-base text-black font-bold hover:text-orange-900 hover:underline underline-offset-2 decoration-[1px] cursor-pointer duration-300">
+            <li
+              className="text-base text-black font-bold
+             hover:text-orange-900 hover:underline 
+             underline-offset-2 decoration-[1px] cursor-pointer duration-300"
+            >
               Shop
             </li>
-            <li className="text-base text-black font-bold hover:text-orange-900 hover:underline underline-offset-2 decoration-[1px] cursor-pointer duration-300">
+            <li
+              className="text-base text-black font-bold 
+            hover:text-orange-900 hover:underline 
+            underline-offset-2 decoration-[1px] cursor-pointer duration-300"
+            >
               Element
             </li>
-            <li className="text-base text-black font-bold hover:text-orange-900 hover:underline underline-offset-2 decoration-[1px] cursor-pointer duration-300">
+            <li
+              className="text-base text-black font-bold 
+            hover:text-orange-900 hover:underline 
+            underline-offset-2 decoration-[1px] cursor-pointer duration-300"
+            >
               Blog
             </li>
           </ul>
@@ -59,13 +97,25 @@ const Header = () => {
               </span>
             </Link>
           </div>
-          <div className="">
-            <img
-              className="w-8 h-8 rounded-full"
-              src="https://images.pexels.com/photos/264547/pexels-photo-264547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="userLogo"
-            />
-          </div>
+          {userInfo ? (
+            <div className="flex flex-row gap-2">
+              <FaSignOutAlt className="text-blue-700 cursor-pointer" />
+              <span className="text-blue-700 font-bold text-xs">Log out</span>
+            </div>
+          ) : (
+            <Link to="/login">
+              <div className="flex flex-row gap-2">
+                <FaSignInAlt className="text-blue-700 cursor-pointer" />
+                <span className="text-blue-700 font-bold text-xs">Login</span>
+              </div>
+            </Link>
+          )}
+
+          {/*userInfo && (
+            <p className="text-sm text-blue-700 font-semibold">
+              Welcome {userInfo.name}
+            </p>
+          )*/}
         </div>
       </div>
     </div>

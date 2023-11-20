@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
+import { ToastContainer, toast } from "react-toastify";
+import StripeCheckout from "react-stripe-checkout";
+import axios from "axios";
 
 const Cart = () => {
   const [totalAmt, setTotalAmt] = useState(0);
   const productData = useSelector((store) => store.bazar.productData);
+  const userInfo = useSelector((store) => store.bazar.userInfo);
+  const [payNow, setPayNow] = useState(false);
 
   useEffect(() => {
     let price = 0;
@@ -14,6 +19,22 @@ const Cart = () => {
     });
     setTotalAmt(price.toFixed(2));
   }, [productData]);
+
+  const handleCheckout = () => {
+    if (userInfo) {
+      setPayNow(true);
+    } else {
+      toast.error("Please sign in to checkout");
+      setPayNow(false);
+    }
+  };
+
+  const payment = async (token) => {
+    await axios.post("http://localhost:8000/pay", {
+      amount: totalAmt * 100,
+      token,
+    });
+  };
   return (
     <div className="max-w-screen-xl mx-auto py-20 flex gap-2">
       <CartItem />
@@ -38,10 +59,40 @@ const Cart = () => {
           Total
           <span className="text-xl font-bold text-black">$ {totalAmt}</span>
         </p>
-        <button className="bg-black text-white text-xs p-3 w-full hover:bg-gray-500 duration-500 hover:border-none mt-3">
+        <button
+          onClick={handleCheckout}
+          className="bg-black text-white text-xs p-3 w-full hover:bg-gray-500 duration-500 hover:border-none mt-3"
+        >
           Proceed to checkout
         </button>
+        {payNow && (
+          <div className="w-full mt-6 flex items-center justify-center">
+            <StripeCheckout
+              stripeKey="sk_test_51OBBefGdJe0CaPtvCMUBL67jRzqewd1ybVHGIEtOzChYMJslmxzB7E8PF7sPjyEGz4983aaP4YVNecUSjVy1tQGe005vOhMDDi"
+              name="Bazar online shopping"
+              amount={totalAmt * 100}
+              label="Pay to bazar"
+              description={`Your payment amount is ${totalAmt}`}
+              token={payment}
+              email={userInfo.email}
+            />
+          </div>
+        )}
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
     </div>
   );
 };
